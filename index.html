@@ -670,9 +670,14 @@
             <div class="progress-text">
                 <span id="progress-text">0 of 0 emails processed</span>
             </div>
-            <div class="chart-bars">
-                <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
+            <div style="font-size: 11px; color: var(--muted-fg); margin-top: 10px; text-align: center;">
+                Recent batch sizes (last 8 indexed batches)
+            </div>
+            <div class="chart-bars" id="velocity-chart">
+                <div class="chart-bar" style="height: 0%"></div><div class="chart-bar" style="height: 0%"></div>
+                <div class="chart-bar" style="height: 0%"></div><div class="chart-bar" style="height: 0%"></div>
+                <div class="chart-bar" style="height: 0%"></div><div class="chart-bar" style="height: 0%"></div>
+                <div class="chart-bar" style="height: 0%"></div><div class="chart-bar" style="height: 0%"></div>
             </div>
         </div>
 
@@ -953,6 +958,29 @@
         // Update Vector DB section
         const qdrantPoints = document.getElementById('qdrant-points');
         if (qdrantPoints) qdrantPoints.textContent = (data.indexed || 0).toLocaleString();
+
+        // Update velocity chart from recent batch sizes
+        if (data.logs && data.logs.length > 0) {
+            const batchSizes = [];
+            for (let i = data.logs.length - 1; i >= 0 && batchSizes.length < 8; i--) {
+                const match = data.logs[i].match(/indexed\s+(\d+)\s+new/i);
+                if (match) batchSizes.unshift(parseInt(match[1], 10));
+            }
+            const bars = document.querySelectorAll('#velocity-chart .chart-bar');
+            if (batchSizes.length > 0) {
+                const max = Math.max(...batchSizes, 50); // Scale relative to 50 msg target
+                bars.forEach((bar, i) => {
+                    if (i < batchSizes.length) {
+                        const pct = (batchSizes[i] / max) * 100;
+                        bar.style.height = `${Math.max(pct, 5)}%`;
+                        bar.title = `Batch ${i + 1}: ${batchSizes[i]} emails indexed`;
+                    } else {
+                        bar.style.height = '0%';
+                        bar.title = '';
+                    }
+                });
+            }
+        }
 
         if (data.logs && data.logs.length > 0) {
             const logBody = document.getElementById('log-body');

@@ -131,8 +131,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
                         parts = line.split("account total:")[1].split("messages")[0].strip()
                         status["accountTotal"] = int(parts.replace(",", ""))
                         break
-                # Get last 30 log lines
-                status["logs"] = lines[-30:]
+                # Get last 100 log lines (enough for velocity chart + log viewer)
+                status["logs"] = lines[-100:]
             except Exception:
                 pass
 
