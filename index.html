@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zemail Sync Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ══════════════════════════════════════════════════════════
+           TKE THEME SYSTEM — 19 Curated Themes
+           ══════════════════════════════════════════════════════════ */
+        :root {
+            --font: 'Inter', system-ui, -apple-system, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* 1. TKE Branded (default) */
+        :root, [data-theme="tke-branded"] {
+            --color-tke-blue: #0360b7; --color-tke-blue-hover: #0250a0; --color-tke-blue-light: #e8f2fc;
+            --color-tke-green: #38a169; --color-tke-green-light: #e6f7ec;
+            --bg: #ffffff; --fg: #333c4e; --card: #f8fafc; --card-fg: #333c4e;
+            --primary: #0360b7; --primary-fg: #ffffff; --secondary: #38a169; --secondary-fg: #ffffff;
+            --muted: #f1f5f9; --muted-fg: #64748b; --accent: #38a169; --accent-fg: #ffffff;
+            --border: #e2e8f0; --destructive: #ef4444; --ring: #0360b7;
+            --sidebar: #f1f5f9; --sidebar-fg: #334155; --sidebar-active: #0360b7;
+            --chart1: #0360b7; --chart2: #38a169; --chart3: #2bb041; --chart4: #f59e0b; --chart5: #8b5cf6;
+            --radius: 0.625rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.6); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 2. Ocean Breeze */
+        [data-theme="ocean-breeze"] {
+            --color-tke-blue: #0284c7; --color-tke-blue-hover: #0369a1; --color-tke-blue-light: #e0f2fe;
+            --color-tke-green: #06b6d4; --color-tke-green-light: #cffafe;
+            --bg: #f0f9ff; --fg: #0c4a6e; --card: #ffffff; --card-fg: #0c4a6e;
+            --primary: #0ea5e9; --primary-fg: #ffffff; --secondary: #06b6d4; --secondary-fg: #ffffff;
+            --muted: #e0f2fe; --muted-fg: #0369a1; --accent: #7dd3fc; --accent-fg: #0c4a6e;
+            --border: #bae6fd; --destructive: #ef4444; --ring: #0ea5e9;
+            --sidebar: #e0f2fe; --sidebar-fg: #0c4a6e; --sidebar-active: #0ea5e9;
+            --chart1: #0ea5e9; --chart2: #06b6d4; --chart3: #22d3ee; --chart4: #0284c7; --chart5: #0891b2;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.65); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.08); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 3. Northern Lights */
+        [data-theme="northern-lights"] {
+            --color-tke-blue: #0d9488; --color-tke-blue-hover: #0f766e; --color-tke-blue-light: #ccfbf1;
+            --color-tke-green: #a78bfa; --color-tke-green-light: #ede9fe;
+            --bg: #f0fdfa; --fg: #134e4a; --card: #ffffff; --card-fg: #134e4a;
+            --primary: #14b8a6; --primary-fg: #ffffff; --secondary: #a78bfa; --secondary-fg: #ffffff;
+            --muted: #f0fdfa; --muted-fg: #0d9488; --accent: #a78bfa; --accent-fg: #ffffff;
+            --border: #99f6e4; --destructive: #ef4444; --ring: #14b8a6;
+            --sidebar: #f0fdfa; --sidebar-fg: #134e4a; --sidebar-active: #14b8a6;
+            --chart1: #14b8a6; --chart2: #a78bfa; --chart3: #34d399; --chart4: #818cf8; --chart5: #2dd4bf;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.65); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 4. Mocha Mousse */
+        [data-theme="mocha-mousse"] {
+            --color-tke-blue: #92400e; --color-tke-blue-hover: #78350f; --color-tke-blue-light: #fef3c7;
+            --color-tke-green: #b45309; --color-tke-green-light: #fef9c3;
+            --bg: #faf8f5; --fg: #292524; --card: #ffffff; --card-fg: #292524;
+            --primary: #92400e; --primary-fg: #fef3c7; --secondary: #b45309; --secondary-fg: #ffffff;
+            --muted: #f5f0eb; --muted-fg: #78716c; --accent: #d6cfc7; --accent-fg: #292524;
+            --border: #d6cfc7; --destructive: #ef4444; --ring: #92400e;
+            --sidebar: #f5f0eb; --sidebar-fg: #292524; --sidebar-active: #92400e;
+            --chart1: #92400e; --chart2: #b45309; --chart3: #d97706; --chart4: #78350f; --chart5: #a16207;
+            --radius: 0.5rem;
+            --header-text: #fef3c7; --header-subtle: rgba(254,243,199,0.65); --header-divider: rgba(254,243,199,0.3);
+            --header-tab-active: #fef3c7; --header-tab-inactive: rgba(254,243,199,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(254,243,199,0.15);
+        }
+
+        /* 5. Nature */
+        [data-theme="nature"] {
+            --color-tke-blue: #15803d; --color-tke-blue-hover: #166534; --color-tke-blue-light: #dcfce7;
+            --color-tke-green: #22c55e; --color-tke-green-light: #bbf7d0;
+            --bg: #f0fdf4; --fg: #14532d; --card: #ffffff; --card-fg: #14532d;
+            --primary: #16a34a; --primary-fg: #ffffff; --secondary: #22c55e; --secondary-fg: #ffffff;
+            --muted: #f0fdf4; --muted-fg: #15803d; --accent: #bbf7d0; --accent-fg: #14532d;
+            --border: #bbf7d0; --destructive: #ef4444; --ring: #16a34a;
+            --sidebar: #f0fdf4; --sidebar-fg: #14532d; --sidebar-active: #16a34a;
+            --chart1: #16a34a; --chart2: #22c55e; --chart3: #4ade80; --chart4: #15803d; --chart5: #86efac;
+            --radius: 0.5rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.65); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 6. Modern Minimal */
+        [data-theme="modern-minimal"] {
+            --color-tke-blue: #18181b; --color-tke-blue-hover: #27272a; --color-tke-blue-light: #f4f4f5;
+            --color-tke-green: #3f3f46; --color-tke-green-light: #e4e4e7;
+            --bg: #ffffff; --fg: #09090b; --card: #ffffff; --card-fg: #09090b;
+            --primary: #18181b; --primary-fg: #fafafa; --secondary: #f4f4f5; --secondary-fg: #18181b;
+            --muted: #f4f4f5; --muted-fg: #71717a; --accent: #f4f4f5; --accent-fg: #18181b;
+            --border: #e4e4e7; --destructive: #ef4444; --ring: #a1a1aa;
+            --sidebar: #f4f4f5; --sidebar-fg: #09090b; --sidebar-active: #18181b;
+            --chart1: #2563eb; --chart2: #e11d48; --chart3: #e97718; --chart4: #22c55e; --chart5: #8b5cf6;
+            --radius: 0.5rem;
+            --header-text: #fafafa; --header-subtle: rgba(250,250,250,0.6); --header-divider: rgba(250,250,250,0.2);
+            --header-tab-active: #fafafa; --header-tab-inactive: rgba(250,250,250,0.6);
+            --header-tab-bg: rgba(255,255,255,0.06); --header-tab-border: rgba(255,255,255,0.1);
+        }
+
+        /* 7. Mono */
+        [data-theme="mono"] {
+            --color-tke-blue: #09090b; --color-tke-blue-hover: #18181b; --color-tke-blue-light: #f4f4f5;
+            --color-tke-green: #52525b; --color-tke-green-light: #d4d4d8;
+            --bg: #ffffff; --fg: #09090b; --card: #ffffff; --card-fg: #09090b;
+            --primary: #18181b; --primary-fg: #fafafa; --secondary: #f4f4f5; --secondary-fg: #18181b;
+            --muted: #f4f4f5; --muted-fg: #71717a; --accent: #f4f4f5; --accent-fg: #18181b;
+            --border: #e4e4e7; --destructive: #ef4444; --ring: #52525b;
+            --sidebar: #fafafa; --sidebar-fg: #09090b; --sidebar-active: #18181b;
+            --chart1: #18181b; --chart2: #71717a; --chart3: #d4d4d8; --chart4: #52525b; --chart5: #a1a1aa;
+            --radius: 0rem;
+            --header-text: #fafafa; --header-subtle: rgba(250,250,250,0.6); --header-divider: rgba(250,250,250,0.2);
+            --header-tab-active: #fafafa; --header-tab-inactive: rgba(250,250,250,0.6);
+            --header-tab-bg: rgba(255,255,255,0.06); --header-tab-border: rgba(255,255,255,0.1);
+        }
+
+        /* 8. Cosmic Night */
+        [data-theme="cosmic-night"] {
+            --color-tke-blue: #7c3aed; --color-tke-blue-hover: #6d28d9; --color-tke-blue-light: #1e1b4b;
+            --color-tke-green: #14b8a6; --color-tke-green-light: #0f2a1f;
+            --bg: #0b0d17; --fg: #e0e7ff; --card: #151832; --card-fg: #e0e7ff;
+            --primary: #a855f7; --primary-fg: #ffffff; --secondary: #1e1b4b; --secondary-fg: #c4b5fd;
+            --muted: #1e1b4b; --muted-fg: #8b5cf6; --accent: #312e81; --accent-fg: #e0e7ff;
+            --border: #312e81; --destructive: #ef4444; --ring: #a855f7;
+            --sidebar: #0e1025; --sidebar-fg: #c4b5fd; --sidebar-active: #a855f7;
+            --chart1: #a855f7; --chart2: #818cf8; --chart3: #f472b6; --chart4: #c084fc; --chart5: #2dd4bf;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.6); --header-divider: rgba(255,255,255,0.25);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.6);
+            --header-tab-bg: rgba(0,0,0,0.2); --header-tab-border: rgba(255,255,255,0.12);
+        }
+
+        /* 9. Starry Night */
+        [data-theme="starry-night"] {
+            --color-tke-blue: #b45309; --color-tke-blue-hover: #92400e; --color-tke-blue-light: #1e3a5f;
+            --color-tke-green: #3b82f6; --color-tke-green-light: #1e3a5f;
+            --bg: #0c1222; --fg: #e2e8f0; --card: #162032; --card-fg: #e2e8f0;
+            --primary: #fbbf24; --primary-fg: #0c1222; --secondary: #1e3a5f; --secondary-fg: #fde68a;
+            --muted: #1e293b; --muted-fg: #94a3b8; --accent: #1e3a5f; --accent-fg: #fde68a;
+            --border: #1e3a5f; --destructive: #ef4444; --ring: #fbbf24;
+            --sidebar: #0e1625; --sidebar-fg: #cbd5e1; --sidebar-active: #fbbf24;
+            --chart1: #fbbf24; --chart2: #60a5fa; --chart3: #a78bfa; --chart4: #f59e0b; --chart5: #22d3ee;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.65); --header-divider: rgba(255,255,255,0.25);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.6);
+            --header-tab-bg: rgba(0,0,0,0.2); --header-tab-border: rgba(255,255,255,0.12);
+        }
+
+        /* 10. Darkmatter */
+        [data-theme="darkmatter"] {
+            --color-tke-blue: #d87943; --color-tke-blue-hover: #c06835; --color-tke-blue-light: #222222;
+            --color-tke-green: #5f8787; --color-tke-green-light: #1a2e2e;
+            --bg: #121113; --fg: #c1c1c1; --card: #1a1a1a; --card-fg: #c1c1c1;
+            --primary: #e78a53; --primary-fg: #121113; --secondary: #5f8787; --secondary-fg: #121113;
+            --muted: #222222; --muted-fg: #888888; --accent: #333333; --accent-fg: #c1c1c1;
+            --border: #2a2a2a; --destructive: #5f8787; --ring: #e78a53;
+            --sidebar: #161516; --sidebar-fg: #999999; --sidebar-active: #e78a53;
+            --chart1: #5f8787; --chart2: #e78a53; --chart3: #fbcb97; --chart4: #888888; --chart5: #aaa;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.6); --header-divider: rgba(255,255,255,0.2);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.55);
+            --header-tab-bg: rgba(0,0,0,0.2); --header-tab-border: rgba(255,255,255,0.1);
+        }
+
+        /* 11. Cyberpunk */
+        [data-theme="cyberpunk"] {
+            --color-tke-blue: #d946ef; --color-tke-blue-hover: #c026d3; --color-tke-blue-light: #151530;
+            --color-tke-green: #00ffcc; --color-tke-green-light: #0a1a1a;
+            --bg: #0c0c1d; --fg: #eceff4; --card: #1e1e3f; --card-fg: #eceff4;
+            --primary: #ff00c8; --primary-fg: #ffffff; --secondary: #1e1e3f; --secondary-fg: #eceff4;
+            --muted: #151530; --muted-fg: #8085a6; --accent: #00ffcc; --accent-fg: #0c0c1d;
+            --border: #2e2e5e; --destructive: #ff3d00; --ring: #ff00c8;
+            --sidebar: #0e0e22; --sidebar-fg: #b0b5d0; --sidebar-active: #ff00c8;
+            --chart1: #ff00c8; --chart2: #9000ff; --chart3: #00e5ff; --chart4: #00ffcc; --chart5: #ffe600;
+            --radius: 0.5rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.6); --header-divider: rgba(255,255,255,0.2);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.55);
+            --header-tab-bg: rgba(0,0,0,0.25); --header-tab-border: rgba(255,255,255,0.1);
+        }
+
+        /* 12. Neo Brutalism */
+        [data-theme="neo-brutalism"] {
+            --color-tke-blue: #ff5252; --color-tke-blue-hover: #e64545; --color-tke-blue-light: #f5f5f5;
+            --color-tke-green: #69f0ae; --color-tke-green-light: #e8fdf0;
+            --bg: #fafafa; --fg: #1a1a1a; --card: #ffffff; --card-fg: #1a1a1a;
+            --primary: #ff5252; --primary-fg: #ffffff; --secondary: #ffeb3b; --secondary-fg: #1a1a1a;
+            --muted: #f5f5f5; --muted-fg: #616161; --accent: #448aff; --accent-fg: #ffffff;
+            --border: #222222; --destructive: #ff1744; --ring: #ff5252;
+            --sidebar: #fafafa; --sidebar-fg: #1a1a1a; --sidebar-active: #ff5252;
+            --chart1: #ff5252; --chart2: #ffeb3b; --chart3: #448aff; --chart4: #69f0ae; --chart5: #ff6e40;
+            --radius: 0rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.7); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.2);
+        }
+
+        /* 13. Bold Tech */
+        [data-theme="bold-tech"] {
+            --color-tke-blue: #4f46e5; --color-tke-blue-hover: #4338ca; --color-tke-blue-light: #eef2ff;
+            --color-tke-green: #06b6d4; --color-tke-green-light: #cffafe;
+            --bg: #f8fafc; --fg: #0f172a; --card: #ffffff; --card-fg: #0f172a;
+            --primary: #6366f1; --primary-fg: #ffffff; --secondary: #e0e7ff; --secondary-fg: #3730a3;
+            --muted: #f1f5f9; --muted-fg: #475569; --accent: #06b6d4; --accent-fg: #ffffff;
+            --border: #c7d2fe; --destructive: #ef4444; --ring: #6366f1;
+            --sidebar: #f1f5f9; --sidebar-fg: #0f172a; --sidebar-active: #6366f1;
+            --chart1: #6366f1; --chart2: #06b6d4; --chart3: #f43f5e; --chart4: #8b5cf6; --chart5: #22c55e;
+            --radius: 0.5rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.65); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 14. Quantum Rose */
+        [data-theme="quantum-rose"] {
+            --color-tke-blue: #e11d48; --color-tke-blue-hover: #be123c; --color-tke-blue-light: #fff1f2;
+            --color-tke-green: #fb7185; --color-tke-green-light: #ffe4e6;
+            --bg: #fff1f2; --fg: #1c1917; --card: #ffffff; --card-fg: #1c1917;
+            --primary: #f43f5e; --primary-fg: #ffffff; --secondary: #ffe4e6; --secondary-fg: #9f1239;
+            --muted: #fff1f2; --muted-fg: #be123c; --accent: #fecdd3; --accent-fg: #1c1917;
+            --border: #fecdd3; --destructive: #b91c1c; --ring: #f43f5e;
+            --sidebar: #fff1f2; --sidebar-fg: #1c1917; --sidebar-active: #f43f5e;
+            --chart1: #f43f5e; --chart2: #fb7185; --chart3: #fda4af; --chart4: #e11d48; --chart5: #be123c;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.7); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 15. Candyland */
+        [data-theme="candyland"] {
+            --color-tke-blue: #db2777; --color-tke-blue-hover: #be185d; --color-tke-blue-light: #fce7f3;
+            --color-tke-green: #34d399; --color-tke-green-light: #d1fae5;
+            --bg: #fdf2f8; --fg: #1c1917; --card: #ffffff; --card-fg: #1c1917;
+            --primary: #f472b6; --primary-fg: #ffffff; --secondary: #d9f99d; --secondary-fg: #365314;
+            --muted: #fce7f3; --muted-fg: #be185d; --accent: #34d399; --accent-fg: #ffffff;
+            --border: #fbcfe8; --destructive: #ef4444; --ring: #f472b6;
+            --sidebar: #fce7f3; --sidebar-fg: #1c1917; --sidebar-active: #f472b6;
+            --chart1: #f472b6; --chart2: #34d399; --chart3: #fbbf24; --chart4: #60a5fa; --chart5: #c084fc;
+            --radius: 1rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.7); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.08); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 16. Sunset Horizon */
+        [data-theme="sunset-horizon"] {
+            --color-tke-blue: #ea580c; --color-tke-blue-hover: #c2410c; --color-tke-blue-light: #fff7ed;
+            --color-tke-green: #8b5cf6; --color-tke-green-light: #f5f3ff;
+            --bg: #fff7ed; --fg: #1c1917; --card: #ffffff; --card-fg: #1c1917;
+            --primary: #f97316; --primary-fg: #ffffff; --secondary: #ef4444; --secondary-fg: #ffffff;
+            --muted: #ffedd5; --muted-fg: #c2410c; --accent: #fbbf24; --accent-fg: #1c1917;
+            --border: #fed7aa; --destructive: #b91c1c; --ring: #f97316;
+            --sidebar: #fff7ed; --sidebar-fg: #1c1917; --sidebar-active: #f97316;
+            --chart1: #f97316; --chart2: #ef4444; --chart3: #fbbf24; --chart4: #f43f5e; --chart5: #8b5cf6;
+            --radius: 0.75rem;
+            --header-text: #ffffff; --header-subtle: rgba(255,255,255,0.7); --header-divider: rgba(255,255,255,0.3);
+            --header-tab-active: #ffffff; --header-tab-inactive: rgba(255,255,255,0.65);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(255,255,255,0.15);
+        }
+
+        /* 17. Matrix */
+        [data-theme="matrix"] {
+            --color-tke-blue: #00cc33; --color-tke-blue-hover: #00aa28; --color-tke-blue-light: #0a1a0a;
+            --color-tke-green: #00ff41; --color-tke-green-light: #0a1a0a;
+            --bg: #0a0a0a; --fg: #00ff41; --card: #0d1117; --card-fg: #00ff41;
+            --primary: #00ff41; --primary-fg: #0a0a0a; --secondary: #0d1a0d; --secondary-fg: #00ff41;
+            --muted: #1a1a2e; --muted-fg: #00994d; --accent: #00cc33; --accent-fg: #0a0a0a;
+            --border: #003300; --destructive: #ff0000; --ring: #00ff41;
+            --sidebar: #080808; --sidebar-fg: #00cc33; --sidebar-active: #00ff41;
+            --chart1: #00ff41; --chart2: #00cc33; --chart3: #009926; --chart4: #33ff66; --chart5: #66ff8c;
+            --radius: 0rem;
+            --header-text: #00ff41; --header-subtle: rgba(0,255,65,0.5); --header-divider: rgba(0,255,65,0.2);
+            --header-tab-active: #00ff41; --header-tab-inactive: rgba(0,255,65,0.5);
+            --header-tab-bg: rgba(0,255,65,0.05); --header-tab-border: rgba(0,255,65,0.1);
+        }
+
+        /* 18. Catppuccin */
+        [data-theme="catppuccin"] {
+            --color-tke-blue: #7c3aed; --color-tke-blue-hover: #6d28d9; --color-tke-blue-light: #45475a;
+            --color-tke-green: #a6e3a1; --color-tke-green-light: #1e3a1e;
+            --bg: #1e1e2e; --fg: #cdd6f4; --card: #313244; --card-fg: #cdd6f4;
+            --primary: #cba6f7; --primary-fg: #1e1e2e; --secondary: #45475a; --secondary-fg: #bac2de;
+            --muted: #313244; --muted-fg: #a6adc8; --accent: #45475a; --accent-fg: #cdd6f4;
+            --border: #45475a; --destructive: #f38ba8; --ring: #cba6f7;
+            --sidebar: #181825; --sidebar-fg: #bac2de; --sidebar-active: #cba6f7;
+            --chart1: #cba6f7; --chart2: #89b4fa; --chart3: #a6e3a1; --chart4: #f9e2af; --chart5: #eba0ac;
+            --radius: 0.5rem;
+            --header-text: #cdd6f4; --header-subtle: rgba(205,214,244,0.55); --header-divider: rgba(205,214,244,0.2);
+            --header-tab-active: #cdd6f4; --header-tab-inactive: rgba(205,214,244,0.55);
+            --header-tab-bg: rgba(0,0,0,0.2); --header-tab-border: rgba(205,214,244,0.1);
+        }
+
+        /* 19. Vintage Paper */
+        [data-theme="vintage-paper"] {
+            --color-tke-blue: #92400e; --color-tke-blue-hover: #78350f; --color-tke-blue-light: #fef9c3;
+            --color-tke-green: #d97706; --color-tke-green-light: #fef3c7;
+            --bg: #fef3c7; --fg: #292524; --card: #fffbeb; --card-fg: #292524;
+            --primary: #92400e; --primary-fg: #fef3c7; --secondary: #fde68a; --secondary-fg: #78350f;
+            --muted: #fef9c3; --muted-fg: #a16207; --accent: #d97706; --accent-fg: #ffffff;
+            --border: #d97706; --destructive: #ef4444; --ring: #92400e;
+            --sidebar: #fef9c3; --sidebar-fg: #292524; --sidebar-active: #92400e;
+            --chart1: #92400e; --chart2: #b45309; --chart3: #d97706; --chart4: #a16207; --chart5: #78350f;
+            --radius: 0.25rem;
+            --header-text: #fef3c7; --header-subtle: rgba(254,243,199,0.65); --header-divider: rgba(254,243,199,0.25);
+            --header-tab-active: #fef3c7; --header-tab-inactive: rgba(254,243,199,0.6);
+            --header-tab-bg: rgba(0,0,0,0.1); --header-tab-border: rgba(254,243,199,0.15);
+        }
+
+        /* ── DARK MODE OVERRIDES ── */
+        [data-mode="dark"] {
+            --bg: #0f172a; --fg: #e2e8f0; --card: #1e293b; --card-fg: #e2e8f0;
+            --muted: #334155; --muted-fg: #94a3b8;
+            --border: #475569;
+            --sidebar: #0f172a; --sidebar-fg: #cbd5e1;
+        }
+        [data-mode="dark"][data-theme="tke-branded"], [data-mode="dark"]:not([data-theme]) {
+            --color-tke-blue: #2563eb; --color-tke-blue-light: #1e3a5f;
+            --primary: #3b82f6; --primary-fg: #ffffff; --secondary: #4ade80; --secondary-fg: #0f172a;
+            --accent: #4ade80; --accent-fg: #0f172a; --ring: #3b82f6;
+            --sidebar-active: #3b82f6;
+            --chart1: #3b82f6; --chart2: #4ade80; --chart3: #2bb041; --chart4: #fbbf24; --chart5: #a78bfa;
+        }
+        [data-mode="dark"][data-theme="ocean-breeze"] {
+            --color-tke-blue: #0369a1; --bg: #0a1520; --fg: #bae6fd; --card: #0c2030; --card-fg: #bae6fd;
+            --primary: #38bdf8; --primary-fg: #0a1520; --secondary: #0891b2; --secondary-fg: #bae6fd;
+            --muted: #164e63; --muted-fg: #22d3ee; --accent: #0e7490; --accent-fg: #bae6fd; --border: #164e63;
+            --sidebar: #0a1520; --sidebar-fg: #bae6fd; --sidebar-active: #38bdf8;
+            --chart1: #38bdf8; --chart2: #22d3ee; --chart3: #67e8f9; --chart4: #0ea5e9; --chart5: #06b6d4;
+        }
+        [data-mode="dark"][data-theme="modern-minimal"] {
+            --bg: #09090b; --fg: #fafafa; --card: #18181b; --card-fg: #fafafa;
+            --primary: #fafafa; --primary-fg: #18181b; --secondary: #27272a; --secondary-fg: #fafafa;
+            --muted: #27272a; --muted-fg: #a1a1aa; --accent: #27272a; --accent-fg: #fafafa; --border: #27272a;
+            --sidebar: #09090b; --sidebar-fg: #fafafa; --sidebar-active: #fafafa;
+        }
+        [data-mode="dark"][data-theme="bold-tech"] {
+            --color-tke-blue: #4338ca; --bg: #0a0a1a; --fg: #e0e7ff; --card: #151530; --card-fg: #e0e7ff;
+            --primary: #818cf8; --primary-fg: #0a0a1a; --secondary: #1e1b4b; --secondary-fg: #c7d2fe;
+            --muted: #1e1b4b; --muted-fg: #6366f1; --accent: #06b6d4; --accent-fg: #0a0a1a; --border: #312e81;
+            --sidebar: #0a0a1a; --sidebar-fg: #e0e7ff; --sidebar-active: #818cf8;
+            --chart1: #818cf8; --chart2: #22d3ee; --chart3: #fb7185; --chart4: #a78bfa; --chart5: #4ade80;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           LAYOUT & COMPONENT STYLES
+           ══════════════════════════════════════════════════════════ */
+        body { font-family: var(--font); background: var(--bg); color: var(--fg); min-height: 100vh; transition: background-color 0.15s, color 0.15s; display: flex; flex-direction: column; }
+
+        /* ── Header (EXACT MATCH) ── */
+        .tke-header {
+            position: sticky; top: 0; z-index: 50;
+            background: var(--color-tke-blue); color: var(--header-text);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+            transition: background-color 0.15s;
+        }
+        .tke-header-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; height: 52px;
+        }
+        .tke-header-left { display: flex; align-items: center; gap: 12px; }
+        .tke-header-logo { height: 30px; width: auto; }
+        .tke-header-divider { height: 24px; width: 1px; background: var(--header-divider); }
+        .tke-header-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; color: var(--header-text); }
+        .tke-header-subtitle { font-size: 11px; line-height: 1.2; color: var(--header-subtle); }
+        .tke-header-right { display: flex; align-items: center; gap: 12px; }
+
+        /* Theme trigger */
+        .tke-theme-trigger {
+            display: flex; align-items: center; gap: 6px;
+            padding: 5px 10px; border-radius: 8px;
+            border: 1px solid var(--header-divider);
+            background: rgba(255,255,255,0.08); color: var(--header-text);
+            cursor: pointer; font-size: 12px; font-weight: 500; font-family: var(--font);
+            transition: background 0.15s;
+        }
+        .tke-theme-trigger:hover { background: rgba(255,255,255,0.15); }
+        .tke-theme-icon { width: 14px; height: 14px; opacity: 0.85; }
+
+        /* Mode button */
+        .tke-mode-btn {
+            width: 32px; height: 32px; border-radius: 6px; border: none;
+            background: transparent; color: var(--header-subtle); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+            transition: all 0.15s;
+        }
+        .tke-mode-btn:hover { background: rgba(255,255,255,0.12); color: var(--header-text); }
+
+        /* Navigation tabs */
+        .tke-header-tabs {
+            display: flex; gap: 2px; padding: 0 24px;
+            background: var(--header-tab-bg);
+            border-top: 1px solid var(--header-tab-border);
+        }
+        .tke-tab {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 16px; font-size: 13px; font-weight: 500;
+            border: none; background: transparent; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -1px;
+            transition: all 0.15s; font-family: var(--font);
+        }
+        .tke-tab.active {
+            color: var(--header-tab-active); border-bottom-color: var(--header-tab-active);
+            background: rgba(255,255,255,0.10);
+        }
+        .tke-tab:not(.active) {
+            color: var(--header-tab-inactive);
+        }
+        .tke-tab:not(.active):hover {
+            color: var(--header-tab-active); background: rgba(255,255,255,0.06);
+        }
+        .tke-tab svg { width: 15px; height: 15px; }
+
+        /* ── Main Layout ── */
+        .main { display: flex; flex: 1; overflow: hidden; }
+        .sidebar {
+            width: 240px; background: var(--sidebar); border-right: 1px solid var(--border);
+            padding: 12px 8px; display: flex; flex-direction: column; overflow-y: auto;
+            transition: background-color 0.15s;
+        }
+        .sidebar-section {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--muted-fg); padding: 12px 10px 4px;
+        }
+        .sidebar-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 10px; border-radius: var(--radius); font-size: 13px; font-weight: 500;
+            color: var(--sidebar-fg); cursor: pointer; transition: all 0.1s;
+            border-left: 3px solid transparent; text-decoration: none;
+        }
+        .sidebar-item:hover { background: var(--muted); }
+        .sidebar-item.active {
+            background: var(--muted);
+            color: var(--sidebar-active); border-left-color: var(--sidebar-active); font-weight: 600;
+        }
+        @supports (background: color-mix(in srgb, red 50%, transparent)) {
+            .sidebar-item.active {
+                background: color-mix(in srgb, var(--sidebar-active) 12%, transparent);
+            }
+        }
+        .sidebar-item svg { width: 16px; height: 16px; }
+
+        .content { flex: 1; padding: 24px; overflow-y: auto; transition: background-color 0.15s; background: var(--bg); }
+        .page-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.02em; }
+        .page-desc { font-size: 13px; color: var(--muted-fg); margin-bottom: 20px; }
+
+        /* ── Cards ── */
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 18px; transition: all 0.15s;
+        }
+        .stat-label { font-size: 11px; color: var(--muted-fg); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; display: flex; align-items: center; gap: 6px; }
+        .stat-value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+        .stat-value.v1 { color: var(--primary); }
+        .stat-change { font-size: 11px; margin-top: 4px; color: var(--color-tke-green); display: flex; align-items: center; gap: 4px; }
+
+        /* ── Progress ── */
+        .chart-section {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 18px; margin-bottom: 20px; transition: all 0.15s;
+        }
+        .chart-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; display: flex; justify-content: space-between; }
+        .progress-bar { width: 100%; height: 10px; background: var(--muted); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 99px; width: 0%; transition: width 1s ease; }
+        .progress-text { font-size: 12px; color: var(--muted-fg); }
+
+        /* ── Table ── */
+        .table-section {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; transition: all 0.15s;
+        }
+        .table-header { display: flex; padding: 9px 16px; background: var(--muted); font-size: 11px; font-weight: 600; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1px solid var(--border); }
+        .table-row { display: flex; padding: 8px 16px; border-top: 1px solid var(--border); font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+        .table-row:first-child { border-top: none; }
+        .table-row:hover { background: var(--muted); }
+        .table-col { flex: 1; }
+        .col-time { width: 180px; flex-shrink: 0; color: var(--muted-fg); }
+        .col-level { width: 80px; flex-shrink: 0; font-weight: 700; }
+        
+        .log-info { color: var(--primary); }
+        .log-success { color: var(--color-tke-green); }
+        .log-warning { color: #f59e0b; }
+        .log-error { color: var(--destructive); }
+
+        /* ── Theme Picker Dropdown ── */
+        .picker-wrap { position: relative; }
+        .picker-dropdown {
+            display: none; position: absolute; right: 0; top: calc(100% + 6px);
+            width: 300px; max-height: 420px; overflow-y: auto;
+            background: var(--card); color: var(--card-fg);
+            border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.18); z-index: 100; padding: 8px;
+        }
+        .picker-dropdown.open { display: block; }
+        .picker-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 8px 8px 4px; color: var(--primary); }
+        .picker-label.ext { color: var(--muted-fg); }
+        .picker-sep { height: 1px; background: var(--border); margin: 6px 0; }
+        .core-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px 4px 6px; }
+        .core-card {
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+            padding: 6px 2px; border-radius: 8px; cursor: pointer;
+            border: 2px solid transparent; transition: all 0.15s;
+        }
+        .core-card:hover { background: var(--muted); }
+        .core-card.active { border-color: var(--primary); background: var(--muted); }
+        .core-swatch { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); }
+        .core-name { font-size: 8px; font-weight: 600; text-align: center; line-height: 1.15; max-width: 52px; }
+        
+        .ext-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 5px 8px; border-radius: 6px; cursor: pointer; transition: all 0.1s;
+        }
+        .ext-item:hover { background: var(--muted); }
+        .ext-item.active { background: var(--muted); }
+        .ext-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; }
+        .ext-name { flex: 1; font-size: 12px; }
+        .ext-check { font-size: 14px; color: var(--primary); }
+
+        /* ── Chart Section ── */
+        .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 60px; margin-top: 10px; }
+        .chart-bar { flex: 1; border-radius: 3px 3px 0 0; transition: all 0.15s; }
+        .chart-bar:nth-child(1) { height: 80%; background: var(--chart1); }
+        .chart-bar:nth-child(2) { height: 55%; background: var(--chart2); }
+        .chart-bar:nth-child(3) { height: 90%; background: var(--chart3); }
+        .chart-bar:nth-child(4) { height: 40%; background: var(--chart4); }
+        .chart-bar:nth-child(5) { height: 70%; background: var(--chart5); }
+        .chart-bar:nth-child(6) { height: 50%; background: var(--chart1); opacity: 0.6; }
+        .chart-bar:nth-child(7) { height: 85%; background: var(--chart2); opacity: 0.6; }
+        .chart-bar:nth-child(8) { height: 35%; background: var(--chart3); opacity: 0.6; }
+
+        @media (max-width: 640px) {
+            .tke-header-subtitle { display: none; }
+            .sidebar { display: none; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ TKE STANDARD HEADER ═══════ -->
+<header class="tke-header">
+    <div class="tke-header-bar">
+        <div class="tke-header-left">
+            <svg class="tke-header-logo" viewBox="0 0 100 100">
+                <path d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" fill="white" opacity="0.8"/>
+                <path d="M50 25 L75 40 L75 60 L50 75 L25 60 L25 40 Z" fill="white"/>
+            </svg>
+            <div class="tke-header-divider"></div>
+            <div>
+                <div class="tke-header-title">Zemail Sync</div>
+                <div class="tke-header-subtitle">Gmail Semantic Search Indexing</div>
+            </div>
+        </div>
+        <div class="tke-header-right">
+            <button class="tke-mode-btn" onclick="toggleMode()" id="modeBtn" title="Toggle light/dark">&#9788;</button>
+            <div class="picker-wrap">
+                <button class="tke-theme-trigger" onclick="togglePicker()">
+                    <svg class="tke-theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                    <span>Theme</span>
+                </button>
+                <div class="picker-dropdown" id="picker"></div>
+            </div>
+        </div>
+    </div>
+    <div class="tke-header-tabs">
+        <button class="tke-tab active" onclick="setTab(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+        </button>
+        <button class="tke-tab" onclick="setTab(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Logs
+        </button>
+        <button class="tke-tab" onclick="setTab(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            Settings
+        </button>
+    </div>
+</header>
+
+<div class="main">
+    <!-- ── SIDEBAR ── -->
+    <nav class="sidebar">
+        <div class="sidebar-section">Sync</div>
+        <a href="#dashboard" class="sidebar-item active" onclick="showSection('dashboard', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+        </a>
+        <a href="#logs" class="sidebar-item" onclick="showSection('logs', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Sync Logs
+        </a>
+        <a href="#settings" class="sidebar-item" onclick="showSection('settings', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            Settings
+        </a>
+        <div class="sidebar-section">System</div>
+        <a href="#status" class="sidebar-item" onclick="showSection('status', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            API Status
+        </a>
+        <a href="#vectordb" class="sidebar-item" onclick="showSection('vectordb', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            Vector DB
+        </a>
+        <div class="sidebar-section">Info</div>
+        <a href="#changelog" class="sidebar-item" onclick="showSection('changelog', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Changelog
+        </a>
+    </nav>
+
+    <!-- ── CONTENT ── -->
+    <main class="content">
+        <!-- DASHBOARD SECTION -->
+        <section id="dashboard" class="page-section">
+        <div class="page-title">Dashboard</div>
+        <div class="page-desc">Real-time monitoring for Gmail semantic search indexing</div>
+
+        <div class="cards-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M22 17H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2z"/><path d="M12 17v4"/><path d="M8 21h8"/></svg>
+                    Emails Indexed
+                </div>
+                <div class="stat-value v1" id="indexed-count">--</div>
+                <div class="stat-change">Total vectors in store</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+                    Account Total
+                </div>
+                <div class="stat-value" id="account-total">--</div>
+                <div class="stat-change">Messages in Gmail</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    Sync Status
+                </div>
+                <div class="stat-value" id="sync-status">--</div>
+                <div class="stat-change" id="sync-detail">Checking...</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-title">
+                Indexing Progress
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progress-text">0 of 0 emails processed</span>
+            </div>
+            <div class="chart-bars">
+                <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
+                <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
+            </div>
+        </div>
+
+        <div class="table-section" id="logs">
+            <div class="table-header">
+                <div class="col-time">Timestamp</div>
+                <div class="col-level">Level</div>
+                <div class="table-col">Message</div>
+            </div>
+            <div id="log-body">
+                <div class="table-row">
+                    <div class="table-col">Initialising dashboard...</div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+        <!-- SETTINGS SECTION -->
+        <section id="settings" class="page-section" style="display:none;">
+            <div class="page-title">Settings</div>
+            <div class="page-desc">Configure sync behaviour and indexing preferences</div>
+            <div class="chart-section">
+                <div class="chart-title">Sync Configuration</div>
+                <div style="padding: 16px; color: var(--muted-fg); font-size: 13px;">
+                    <p><strong>Batch Size:</strong> 50 messages per fetch</p>
+                    <p><strong>Base Sleep:</strong> 15 seconds (adaptive)</p>
+                    <p><strong>Max Sleep:</strong> 120 seconds after rate limits</p>
+                    <p><strong>Qdrant Dual-Write:</strong> Enabled</p>
+                    <p><strong>Embedding Model:</strong> zembed-1 (1280d)</p>
+                    <p><strong>Rerank Model:</strong> zerank-2</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- API STATUS SECTION -->
+        <section id="status" class="page-section" style="display:none;">
+            <div class="page-title">API Status</div>
+            <div class="page-desc">Service health and connectivity</div>
+            <div class="cards-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Gmail API</div>
+                    <div class="stat-value v1">Connected</div>
+                    <div class="stat-change">OAuth authorised</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">ZeroEntropy</div>
+                    <div class="stat-value v2">Active</div>
+                    <div class="stat-change">zembed-1 + zerank-2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Qdrant Cloud</div>
+                    <div class="stat-value v3">Online</div>
+                    <div class="stat-change">HNSW vector search</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VECTOR DB SECTION -->
+        <section id="vectordb" class="page-section" style="display:none;">
+            <div class="page-title">Vector Database</div>
+            <div class="page-desc">Qdrant cloud collection status</div>
+            <div class="chart-section">
+                <div class="chart-title">Collection: zemail</div>
+                <div style="padding: 16px; color: var(--muted-fg); font-size: 13px;">
+                    <p><strong>Status:</strong> Green (healthy)</p>
+                    <p><strong>Points:</strong> <span id="qdrant-points">--</span></p>
+                    <p><strong>Vector Size:</strong> 1280 dimensions</p>
+                    <p><strong>Distance:</strong> Cosine</p>
+                    <p><strong>Payload Filtering:</strong> from_email, labels, date_after, date_before</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHANGELOG SECTION -->
+        <section id="changelog" class="page-section" style="display:none;">
+            <div class="page-title">Changelog</div>
+            <div class="page-desc">Version history and updates</div>
+            <div class="table-section">
+                <div class="table-header">
+                    <div class="table-col" style="flex:0 0 100px;">Version</div>
+                    <div class="table-col" style="flex:0 0 120px;">Date</div>
+                    <div class="table-col">Changes</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col" style="flex:0 0 100px;"><span class="badge p">v2.1</span></div>
+                    <div class="table-col" style="flex:0 0 120px;">2026-05-17</div>
+                    <div class="table-col">Adaptive rate limiting, jitter, 50-msg batches, Qdrant dual-write</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col" style="flex:0 0 100px;"><span class="badge p">v2.0</span></div>
+                    <div class="table-col" style="flex:0 0 120px;">2026-05-16</div>
+                    <div class="table-col">Resumable full-account sync, state persistence, rate limit handling</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col" style="flex:0 0 100px;"><span class="badge s">v1.1</span></div>
+                    <div class="table-col" style="flex:0 0 120px;">2026-05-15</div>
+                    <div class="table-col">Qdrant vector store integration, payload filtering, HNSW search</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col" style="flex:0 0 100px;"><span class="badge s">v1.0</span></div>
+                    <div class="table-col" style="flex:0 0 120px;">2026-05-14</div>
+                    <div class="table-col">Initial dashboard, numpy embeddings, basic semantic search</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    const THEMES = [
+        { id:"tke-branded", label:"The Kidney Experts", cat:"TKE Core", swatch:"#0360b7" },
+        { id:"ocean-breeze", label:"Ocean Breeze", cat:"TKE Core", swatch:"#0284c7" },
+        { id:"northern-lights", label:"Northern Lights", cat:"TKE Core", swatch:"#0d9488" },
+        { id:"mocha-mousse", label:"Mocha Mousse", cat:"TKE Core", swatch:"#92400e" },
+        { id:"nature", label:"Nature", cat:"TKE Core", swatch:"#15803d" },
+        { id:"modern-minimal", label:"Modern Minimal", cat:"Clean & Minimal", swatch:"#18181b" },
+        { id:"mono", label:"Mono", cat:"Clean & Minimal", swatch:"#09090b" },
+        { id:"cosmic-night", label:"Cosmic Night", cat:"Rich & Atmospheric", swatch:"#7c3aed" },
+        { id:"starry-night", label:"Starry Night", cat:"Rich & Atmospheric", swatch:"#b45309" },
+        { id:"darkmatter", label:"Darkmatter", cat:"Rich & Atmospheric", swatch:"#d87943" },
+        { id:"cyberpunk", label:"Cyberpunk", cat:"Bold & Vibrant", swatch:"#d946ef" },
+        { id:"neo-brutalism", label:"Neo Brutalism", cat:"Bold & Vibrant", swatch:"#ff5252" },
+        { id:"bold-tech", label:"Bold Tech", cat:"Bold & Vibrant", swatch:"#4f46e5" },
+        { id:"quantum-rose", label:"Quantum Rose", cat:"Colorful & Playful", swatch:"#e11d48" },
+        { id:"candyland", label:"Candyland", cat:"Colorful & Playful", swatch:"#db2777" },
+        { id:"sunset-horizon", label:"Sunset Horizon", cat:"Warm & Inviting", swatch:"#ea580c" },
+        { id:"matrix", label:"Matrix", cat:"Character & Craft", swatch:"#00cc33" },
+        { id:"catppuccin", label:"Catppuccin", cat:"Character & Craft", swatch:"#7c3aed" },
+        { id:"vintage-paper", label:"Vintage Paper", cat:"Character & Craft", swatch:"#92400e" },
+    ];
+
+    let currentTheme = localStorage.getItem('zemail-theme') || 'tke-branded';
+    let isDark = localStorage.getItem('zemail-mode') === 'dark';
+
+    const INHERENT_DARK = new Set(["cosmic-night", "starry-night", "darkmatter", "cyberpunk", "matrix", "catppuccin"]);
+
+    function setTheme(id) {
+        currentTheme = id;
+        localStorage.setItem('zemail-theme', id);
+        
+        if (id === "tke-branded") {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.dataset.theme = id;
+        }
+
+        if (INHERENT_DARK.has(id)) {
+            isDark = true;
+            document.documentElement.dataset.mode = "dark";
+        } else {
+            if (isDark) document.documentElement.dataset.mode = "dark";
+            else document.documentElement.removeAttribute('data-mode');
+        }
+        updateUI();
+    }
+
+    function toggleMode() {
+        if (INHERENT_DARK.has(currentTheme)) return;
+        isDark = !isDark;
+        localStorage.setItem('zemail-mode', isDark ? 'dark' : 'light');
+        if (isDark) document.documentElement.dataset.mode = "dark";
+        else document.documentElement.removeAttribute('data-mode');
+        updateUI();
+    }
+
+    function togglePicker() {
+        document.getElementById("picker").classList.toggle("open");
+    }
+
+    function closePicker() {
+        document.getElementById("picker").classList.remove("open");
+    }
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".picker-wrap")) closePicker();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closePicker();
+    });
+
+    function setTab(el) {
+        document.querySelectorAll(".tke-tab").forEach(t => t.classList.remove("active"));
+        el.classList.add("active");
+    }
+
+    function showSection(sectionId, el) {
+        // Hide all sections
+        document.querySelectorAll(".page-section").forEach(s => s.style.display = "none");
+        // Show target section
+        const target = document.getElementById(sectionId);
+        if (target) target.style.display = "block";
+        
+        // Update sidebar active state
+        document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
+        if (el) el.classList.add("active");
+        
+        // Scroll to top of content
+        document.querySelector(".content").scrollTop = 0;
+    }
+
+    function updateUI() {
+        const modeBtn = document.getElementById("modeBtn");
+        modeBtn.textContent = isDark ? "\u2600" : "\u263E";
+        
+        if (INHERENT_DARK.has(currentTheme)) {
+            modeBtn.style.opacity = "0.3";
+            modeBtn.style.cursor = "default";
+        } else {
+            modeBtn.style.opacity = "1";
+            modeBtn.style.cursor = "pointer";
+        }
+
+        const picker = document.getElementById("picker");
+        const cats = {};
+        THEMES.forEach(t => { if (!cats[t.cat]) cats[t.cat] = []; cats[t.cat].push(t); });
+
+        let html = "";
+        Object.entries(cats).forEach(([cat, themes]) => {
+            const isCore = cat === "TKE Core";
+            html += `<div class="picker-label${isCore ? "" : " ext"}">${cat}</div>`;
+            if (isCore) {
+                html += '<div class="core-grid">';
+                themes.forEach(th => {
+                    const active = currentTheme === th.id ? " active" : "";
+                    html += `<div class="core-card${active}" onclick="setTheme('${th.id}')">
+                        <div class="core-swatch" style="background:${th.swatch}"></div>
+                        <div class="core-name">${th.id === 'tke-branded' ? 'TKE' : th.label.split(' ')[0]}</div>
+                    </div>`;
+                });
+                html += '</div>';
+            } else {
+                themes.forEach(th => {
+                    const active = currentTheme === th.id ? " active" : "";
+                    html += `<div class="ext-item${active}" onclick="setTheme('${th.id}')">
+                        <div class="ext-dot" style="background:${th.swatch}"></div>
+                        <div class="ext-name">${th.label}</div>
+                        ${active ? '<span class="ext-check">\u2713</span>' : ''}
+                    </div>`;
+                });
+            }
+        });
+        picker.innerHTML = html;
+    }
+
+    // ── DATA FETCHING ──
+    async function refresh() {
+        try {
+            const res = await fetch('/api/status');
+            const data = await res.json();
+            updateDashboard(data);
+        } catch (e) {
+            console.error("Fetch failed", e);
+        }
+    }
+
+    function updateDashboard(data) {
+        document.getElementById('indexed-count').textContent = (data.indexed || 0).toLocaleString();
+        document.getElementById('account-total').textContent = (data.accountTotal || 0).toLocaleString();
+        
+        const syncStatus = document.getElementById('sync-status');
+        const syncDetail = document.getElementById('sync-detail');
+        if (data.running) {
+            syncStatus.textContent = "Running";
+            syncStatus.className = "stat-value v1";
+            syncDetail.innerHTML = `<span style="color:var(--color-tke-green)">\u25CF Active (PID: ${data.pid})</span>`;
+        } else {
+            syncStatus.textContent = "Stopped";
+            syncStatus.className = "stat-value";
+            syncDetail.textContent = "Idle";
+        }
+
+        const progress = data.accountTotal > 0 ? (data.indexed / data.accountTotal * 100) : 0;
+        document.getElementById('progress-fill').style.width = `${Math.min(progress, 100)}%`;
+        document.getElementById('progress-percent').textContent = `${progress.toFixed(1)}%`;
+        document.getElementById('progress-text').textContent = `${(data.indexed || 0).toLocaleString()} of ${(data.accountTotal || 0).toLocaleString()} emails processed`;
+        
+        // Update Vector DB section
+        const qdrantPoints = document.getElementById('qdrant-points');
+        if (qdrantPoints) qdrantPoints.textContent = (data.indexed || 0).toLocaleString();
+
+        if (data.logs && data.logs.length > 0) {
+            const logBody = document.getElementById('log-body');
+            logBody.innerHTML = data.logs.map(line => {
+                let level = "INFO";
+                let typeClass = "log-info";
+                if (line.toLowerCase().includes("error")) { level = "ERROR"; typeClass = "log-error"; }
+                else if (line.toLowerCase().includes("warn")) { level = "WARN"; typeClass = "log-warning"; }
+                else if (line.toLowerCase().includes("success") || line.toLowerCase().includes("indexed")) { level = "SUCCESS"; typeClass = "log-success"; }
+
+                let time = "";
+                let msg = line;
+                const timeMatch = line.match(/^(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2})/);
+                if (timeMatch) {
+                    time = timeMatch[1];
+                    msg = line.substring(time.length).replace(/^[\s\-\:]+/, "");
+                }
+
+                return `<div class="table-row">
+                    <div class="col-time">${time}</div>
+                    <div class="col-level ${typeClass}">${level}</div>
+                    <div class="table-col">${escapeHtml(msg)}</div>
+                </div>`;
+            }).join('');
+            logBody.parentElement.scrollTop = logBody.parentElement.scrollHeight;
+        }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Init
+    setTheme(currentTheme);
+    refresh();
+    setInterval(refresh, 30000);
+</script>
+</body>
+</html>
